@@ -38,14 +38,13 @@ void play(int note, long duration) { // a long is an int but can contain larger 
      Hint: Think about the resolutions you need!
      You may want to use more percise functions.
   */
-  //long numberOfCycles = duration * note;
-  int waitTime = (duration*1000)/(note*2);//waitTime is wrong!!!
-  for(long i = 0; i < duration * 1000L; i+= note ){
-    
+ 
+  double timeHigh = 1000000.0/(2*note);
+  for (long i = 0; i < duration * 1000L; i +=  timeHigh*2) {
     digitalWrite(LOUDSPEAKER_PIN, HIGH);
-    delayMicroseconds(waitTime);
+    delayMicroseconds(timeHigh);
     digitalWrite(LOUDSPEAKER_PIN, LOW);
-    delayMicroseconds(waitTime);
+    delayMicroseconds(timeHigh);
   }
   
 
@@ -69,13 +68,15 @@ void loop() {
   */
   
 
-  //play(440, 500);
-  for (int j = 0; j < sizeof(melody)/2; j++) {
+  //play(440, 500) ;
+  for (int j = 0; j < sizeof(melody)/sizeof(int); j++) {
     int note = melody[j];
     int duration = rhythm[j] * TEMPO;
-
-    play(note, duration);
-
+    if (note == ' ') {
+      delay(duration); // rest
+    } else {
+      play(note, duration);
+    } 
   }
 
 
